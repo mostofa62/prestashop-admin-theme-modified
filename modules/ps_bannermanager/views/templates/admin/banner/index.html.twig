@@ -1,0 +1,25 @@
+{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
+{% set layoutHeaderToolbarBtn = {
+  add_manufacturer: {
+    href: path('banner_create'),
+    desc: 'Add new banner'|trans({}, 'Admin.Catalog.Feature'),
+    icon: 'add_circle_outline',
+  }  
+}
+%}
+{% block content %}
+    
+  <div class="row justify-content-center">
+    <div class="col">    
+	{% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': bannersGrid} %}	
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+    
+  <script src="{{ asset('themes/default/js/bundle/pagination.js') }}"></script>
+  <script src="{{ asset('themes/new-theme/public/banner.bundle.js') }}"></script>
+{% endblock %}

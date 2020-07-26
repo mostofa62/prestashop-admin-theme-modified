@@ -1,0 +1,11 @@
+{
+  "name": "categoryproduct",
+  "description": "Arklus Category Product",
+  "autoload": {
+    "psr-4": {
+      "Categoryproduct\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "type": "prestashop-module"
+}

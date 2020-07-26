@@ -1,0 +1,18 @@
+{% set enableSidebar = true %}
+{% set layoutTitle = 'Edit: %name%'|trans({'%name%': bannerName}, 'Admin.Actions') %}
+
+{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col">
+      {% include '@Modules/ps_bannermanager/views/templates/admin/banner/Blocks/form.html.twig' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+  <script src="{{ asset('themes/new-theme/public/manufacturer.bundle.js') }}"></script>
+{% endblock %}

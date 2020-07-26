@@ -1,0 +1,71 @@
+# admin_list_banner_list:
+#   path: /banner-manager/list
+#   methods: [GET]
+#   defaults:
+#     _controller: 'Bannermanager\Controller\Admin\ListBannerController::listAction'
+#     _legacy_controller: AdminBannerManager
+#     _legacy_link: AdminBannerManager
+
+# admin_banner_create_process:
+#   path: /banner-manager/create
+#   methods: [GET]
+#   defaults:
+#     _controller: 'Bannermanager\Controller\Admin\ListBannerController::createAction'
+#     _legacy_controller: AdminBannerManager
+
+# admin_banner_create:
+#   path: /banner-manager/create
+#   methods: [POST]
+#   defaults:
+#     _controller: 'Bannermanager\Controller\Admin\ListBannerController::createAction'
+#     _legacy_controller: AdminBannerManager
+
+
+# admin_banner_edit:
+#   path: /banner-manager/edit/{bannerId}
+#   methods: [GET]
+#   defaults:
+#     _controller: 'Bannermanager\Controller\Admin\ListBannerController::editAction'
+#     _legacy_controller: AdminBannerManager    
+
+# admin_banner_edit_process:
+#   path: /banner-manager/edit/{bannerId}
+#   methods: [POST]
+#   defaults:
+#     _controller: 'Bannermanager\Controller\Admin\ListBannerController::editAction'
+#     _legacy_controller: AdminBannerManager
+
+#BANNER RELATED ROUTE
+
+banner_list:
+  path: /banner
+  methods: [GET]
+  defaults:
+    _controller: 'Bannermanager\Controller\Admin\BannerController::indexAction'
+    _legacy_controller: BannerManager
+    _legacy_link: BannerManager
+
+banner_search:
+  path: /banner
+  methods: [POST]
+  defaults:
+    _controller: 'Bannermanager\Controller\Admin\BannerController::searchAction'
+    _legacy_controller: BannerManager
+    _legacy_link: BannerManager
+
+
+banner_create:
+  path: /banner/create
+  methods: [GET, POST]
+  defaults:
+    _controller: 'Bannermanager\Controller\Admin\BannerController::createAction'
+    _legacy_controller: BannerManager
+
+
+
+banner_edit:
+  path: /banner/edit/{bannerId}
+  methods: [GET, POST]
+  defaults:
+    _controller: 'Bannermanager\Controller\Admin\BannerController::editAction'
+    _legacy_controller: BannerManager

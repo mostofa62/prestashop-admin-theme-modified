@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+
+  bannermanager.front.repository:
+    class: Bannermanager\Repository\BannermanagerLegacyRepository
+    #arguments:
+      #$connection: '@doctrine.dbal.default_connection'
+      #$dbPrefix: '%database_prefix%'     

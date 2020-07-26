@@ -1,0 +1,101 @@
+
+{% import '@PrestaShop/Admin/macros.html.twig' as ps %}
+
+{{ form_start(bannerForm) }}
+<div class="card">
+  <h3 class="card-header">
+    <i class="material-icons">star</i>
+    {{ 'Brands'|trans({}, 'Admin.Catalog.Feature') }}
+  </h3>
+  <div class="card-block row">
+    <div class="card-text">
+      {{ form_errors(bannerForm) }}
+
+      {% set invalidCatalogNameHint %}
+        {{ 'Invalid characters:'|trans({}, 'Admin.Notifications.Info') ~ ' <>;=#{}' }}
+      {% endset %}
+
+      {{ ps.form_group_row(bannerForm.title, {}, {
+        'label': 'Title'|trans({}, 'Admin.Global'),
+        'help': invalidCatalogNameHint
+      }) }}
+
+
+
+      {% set invalidGenericNameHint %}
+        {{ 'Invalid characters:'|trans({}, 'Admin.Notifications.Info') ~ ' <>={}' }}
+      {% endset %}
+
+
+      {{ ps.form_group_row(bannerForm.description, {}, {
+        'label': 'Description'|trans({}, 'Admin.Global'),
+        'help': invalidCatalogNameHint
+      }) }}
+
+      
+
+      {% set logoHint %}
+        {{ 'Upload a banner image from your computer.'|trans({}, 'Admin.Catalog.Help') }}
+      {% endset %}
+
+      {{ ps.form_group_row(bannerForm.upload_image_file, {}, {
+        'label': 'Banner Image'|trans({}, 'Admin.Global'),
+        'help': logoHint
+      }) }}
+
+      {% if logoImage is defined and logoImage is not null %}
+        <div class="form-group row">
+          <label for="" class="form-control-label"></label>
+          <div class="col-sm">
+            {% include '@Modules/ps_bannermanager/views/templates/admin/banner/logo_image.html.twig' %}
+          </div>
+        </div>
+      {% endif %}
+
+      {{ ps.form_group_row(bannerForm.link_type, {}, {
+        'label': 'Link Type'|trans({}, 'Admin.Global')
+      }) }}
+
+      {{ ps.form_group_row(bannerForm.link_id, {}, {
+        'label': 'Link Id'|trans({}, 'Admin.Global')
+      }) }}
+
+      
+
+      {{ ps.form_group_row(bannerForm.is_active, {}, {
+        'label': 'Active'|trans({}, 'Admin.Global')
+      }) }}
+
+
+      {{ ps.form_group_row(bannerForm.is_show_title, {}, {
+        'label': 'Show Title'|trans({}, 'Admin.Global')
+      }) }}
+
+      {{ ps.form_group_row(bannerForm.is_single, {}, {
+        'label': 'Single'|trans({}, 'Admin.Global')
+      }) }}
+
+
+      {{ ps.form_group_row(bannerForm.id_parent, {}, {
+        'label': 'Parent Id'|trans({}, 'Admin.Global')
+      }) }}
+
+
+      
+     
+
+      {% block banner_form_rest %}
+        {{ form_rest(bannerForm) }}
+      {% endblock %}
+    </div>
+  </div>
+  <div class="card-footer">
+    <a href="{{ path('banner_list') }}" class="btn btn-outline-secondary">
+      {{ 'Cancel'|trans({}, 'Admin.Actions') }}
+    </a>
+    <button class="btn btn-primary float-right">
+      {{ 'Save'|trans({}, 'Admin.Actions') }}
+    </button>
+  </div>
+</div>
+{{ form_end(bannerForm) }}

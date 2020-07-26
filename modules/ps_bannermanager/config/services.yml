@@ -1,0 +1,217 @@
+services:
+  _defaults:
+    public: true
+
+  bannermanager.repository:
+    class: Bannermanager\Repository\BannermanagerRepository
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'
+      #$languages: '@=service("prestashop.adapter.legacy.context").getLanguages(true, service("prestashop.adapter.shop.context").getContextShopID())'
+      #$translator: '@translator'
+
+  # Grid data query builder
+  bannermanager.grid.query_builder:
+    class: Bannermanager\Core\Grid\Query\LinkBlockQueryBuilder
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'
+
+  # Grid Data Factory
+  bannermanager.grid.data_factory:
+    class: '%prestashop.core.grid.data.factory.doctrine_grid_data_factory%'
+    arguments:
+      $gridQueryBuilder: '@bannermanager.grid.query_builder'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $queryParser: '@prestashop.core.grid.query.doctrine_query_parser'
+      $gridId: 'bannermanager'
+
+  # Link block grid Factory
+  bannermanager.grid.factory:
+    class: Bannermanager\Core\Grid\LinkBlockGridFactory
+    arguments:
+      $translator: '@translator'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $dataFactory: '@bannermanager.grid.data_factory'
+      $filterFormFactory: '@prestashop.core.grid.filter.form_factory'
+
+  # Grid position definition
+  bannermanager.grid.position_definition:
+    class: 'PrestaShop\PrestaShop\Core\Grid\Position\PositionDefinition'
+    arguments:
+      $table: 'arkylus_bannermanager'
+      $idField: 'id_banner'
+      $positionField: 'id_banner'
+
+
+  # Link block form data provider
+  #bannermanager.form_provider:
+    #class: Bannermanager\Form\BannerFormDataProvider
+    #arguments:
+      #$repository: '@bannermanager.repository'      
+      #$moduleRepository: '@prestashop.core.admin.module.repository'
+      #$languages: '@=service("prestashop.adapter.legacy.context").getLanguages(true, service("prestashop.adapter.shop.context").getContextShopID())'
+      #$shopId: '@=service("prestashop.adapter.shop.context").getContextShopID()'
+
+  bannermanager.form_data_provider:
+    class: 'Bannermanager\Form\IdentifiableObject\DataProvider\BannermanagerFormDataProvider'
+
+      
+  # Form types
+  bannermanager.form_type:
+    class: Bannermanager\Form\Type\BannerType
+    parent: 'form.type.translatable.aware'
+    arguments:
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+    public: true
+    tags:
+      - { name: form.type }
+
+  bannermanager.banner_form_data_handler:
+    class: 'Bannermanager\Form\IdentifiableObject\DataHandler\BannermanagerFormDataHandler'
+    arguments:
+      - '@bannermanager.repository'
+
+  bannermanager.banner_form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
+    factory: 'prestashop.core.form.identifiable_object.handler.form_handler_factory:create'
+    arguments:
+      - '@bannermanager.banner_form_data_handler'
+              
+
+  # Link block form handler
+  #bannermanager.form_handler:
+    #class: 'PrestaShop\PrestaShop\Core\Form\FormHandler'
+    #arguments:
+      #$formBuilder: '@=service("form.factory").createBuilder()'
+      #$hookDispatcher: '@prestashop.core.hook.dispatcher'
+      #$formDataProvider: '@bannermanager.form_provider'
+      #$formTypes:
+        #'banner': 'Bannermanager\Form\Type\BannerType'        
+      #$hookName: 'AdminBannerManager'
+
+  # Form Builder extended
+  bannermanager.banner_form_builder:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+    factory: 'prestashop.core.form.builder.form_builder_factory:create'
+    arguments:
+      - Bannermanager\Form\Type\BannerType
+      - '@bannermanager.form_data_provider'
+
+  bannermanager.banner_image_uploader:
+    class: Bannermanager\Uploader\BannerImageUploader      
+
+
+ #Top Grids
+ #BANNER GRID
+ #step-1 grids defination
+  banners.core.grid.banner_grid_defination_factory:
+    class: 'Bannermanager\Core\Grid\Definition\Factory\BannerGridDefinationFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+    public: true
+
+
+ #step-2 query builder
+  banners.core.query.banner_query_builder:
+    class: 'Bannermanager\Core\Grid\Query\BannerQueryBuilder'
+    parent: 'prestashop.core.grid.abstract_query_builder'
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%database_prefix%'
+    public: true
+
+
+  #step-3 data factory
+  banners.core.grid.data.factory.banner_data_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\Data\Factory\DoctrineGridDataFactory'
+    arguments:
+      - '@banners.core.query.banner_query_builder' # service id of our query builder
+      - '@prestashop.core.hook.dispatcher' # every doctrine query builder needs hook dispatcher
+      - '@prestashop.core.grid.query.doctrine_query_parser' # parser to get raw SQL query
+      - 'banners' # this should match your grid id, in our case it's "banners" from grid defination factory
+
+
+  #step-4 grid factory
+  # Configure Grid factory to use services we have implemented
+  banners.core.grid.banner_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+      - '@banners.core.grid.banner_grid_defination_factory' # our definition factory step-1
+      - '@banners.core.grid.data.factory.banner_data_factory' # our data factory step-3
+      - '@prestashop.core.grid.filter.form_factory' # core service needed by grid factory
+      - '@prestashop.core.hook.dispatcher' # core service needed by grid factory
+
+#IMAGE UPLOADER
+  banners.adapter.image.uploader.banner_image_uploader:
+    class: 'Bannermanager\Adapter\Image\Uploader\BannerImageUploader'
+
+#BANNER CRUD
+#REQUIRED
+#CREATE
+#crud-step1
+#form data provider
+  banners.form.identifiable_object.data_provider.banner_form_data_provider:
+    class: 'Bannermanager\Form\IdentifiableObject\DataProvider\BannerFormDataProvider'
+    arguments:
+      - '@prestashop.core.command_bus'
+
+
+#crud-step2.1
+#form types
+  banners.form.type.banner_type:
+    class: Bannermanager\Form\Type\Banner\BannerType
+    parent: 'form.type.translatable.aware'
+    public: true
+    tags:
+      - { name: form.type }
+
+#crud-step2.2
+#form builder
+  banners.form.identifiable_object.builder.banner_form_builder:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+    factory: 'prestashop.core.form.builder.form_builder_factory:create'
+    arguments:
+      - 'Bannermanager\Form\Type\Banner\BannerType'
+      - '@banners.form.identifiable_object.data_provider.banner_form_data_provider'
+
+#crud-step3
+#form data handler
+  banners.form.identifiable_object.data_handler.banner_form_data_handler:
+    class: 'Bannermanager\Form\IdentifiableObject\DataHandler\BannerFormDataHandler'
+    arguments:
+      - '@prestashop.core.command_bus'
+      - '@banners.adapter.image.uploader.banner_image_uploader'
+
+#crud-step4
+#form-handler
+  banners.form.identifiable_object.handler.banner_form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
+    factory: 'prestashop.core.form.identifiable_object.handler.form_handler_factory:create'
+    arguments:
+      - '@banners.form.identifiable_object.data_handler.banner_form_data_handler'
+
+#crud-step5
+#CQRS
+#command-add-handler
+  banners.adapter.banner.command_handler.add_banner_handler:
+    class: 'Bannermanager\Adapter\Banner\CommandHandler\AddBannerHandler'
+    tags:
+      - name: tactician.handler
+        command: 'Bannermanager\Core\Domain\Banner\Command\AddBannerCommand'
+#EDIT
+#GET EDIT
+#query-edit-handler
+  banners.adapter.banner.query_handler.get_banner_for_editing_handler:
+    class: 'Bannermanager\Adapter\Banner\QueryHandler\GetBannerForEditingHandler'
+    arguments:
+      - '@prestashop.core.image.parser.image_tag_source_parser'
+    tags:
+      - name: tactician.handler
+        command: 'Bannermanager\Core\Domain\Banner\Query\GetBannerForEditing'
+#POST EDIT
+#command-edit-handler
+  banners.adapter.banner.command_handler.edit_banner_handler:
+    class: 'Bannermanager\Adapter\Banner\CommandHandler\EditBannerHandler'
+    tags:
+      - name: tactician.handler
+        command: 'Bannermanager\Core\Domain\Banner\Command\EditBannerCommand'

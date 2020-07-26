@@ -1,0 +1,55 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+{% trans_default_domain "Admin.Design.Feature" %}
+
+
+{% block content %}
+    {% if bannerForm.vars.data.id_banner is defined and bannerForm.vars.data.id_banner is not null %}
+        {% set formAction = url('admin_banner_edit_process', {'bannerId': bannerForm.vars.data.id_banner}) %}
+    {% else %}
+        {% set formAction = url('admin_banner_create_process') %}
+    {% endif %}
+    {{ form_start(bannerForm, {'action': formAction, 'attr': {'class': 'form', 'id': 'banner_form'}}) }}
+    <div class="row justify-content-center">
+        {% block banner_form %}
+            <div class="col-xl-10">
+                <div class="card">
+                    <h3 class="card-header">
+                        <i class="material-icons">mode_edit</i>
+                        {% if bannerForm.vars.data.id_banner is defined %}
+                            {{ 'Edit the link block.'|trans({}, 'Modules.Linklist.Admin') }}
+                        {% else %}
+                        {{ 'New Banner'|trans({}, 'Modules.Linklist.Admin') }}
+                        {% endif %}
+                    </h3>
+                    <div class="card-block row">
+                        <div class="card-text">
+                            {{ form_row(bannerForm.title) }}
+                            {{ form_row(bannerForm.description) }}
+                            {{ form_row(bannerForm.upload_image_file) }}
+                            {{ form_row(bannerForm.is_active) }}
+                            
+                            
+                            {{ form_rest(bannerForm) }}
+                            {% do bannerForm.setRendered %}
+                            {{ form_rest(bannerForm) }}
+                            
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url('admin_list_banner_list') }}" class="btn btn-secondary">{{ 'Cancel'|trans({}, 'Admin.Actions') }}</a>
+                            <button class="btn btn-primary">{{ 'Save'|trans({}, 'Admin.Actions') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+    {{ form_end(bannerForm) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('../modules/ps_bannermanager/views/public/form.bundle.js') }}"></script>
+{% endblock %}

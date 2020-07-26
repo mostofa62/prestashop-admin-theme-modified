@@ -1,0 +1,11 @@
+{
+  "name": "prestashop/bannermanager",
+  "description": "Arklus Bannermanager, Manage different type Banner with link and title",
+  "autoload": {
+    "psr-4": {
+      "Bannermanager\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "type": "prestashop-module"
+}
