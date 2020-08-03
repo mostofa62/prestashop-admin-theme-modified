@@ -534,6 +534,12 @@ $fa-font-path: "~font-awesome/fonts";
   }
 
   /** mostofa **/
+  #_mobile_logo{
+    img{
+      max-height:20px !important;
+      margin: 0 0.2rem;
+    }
+  }
   .owl-carousel{
 
     .owl-nav{

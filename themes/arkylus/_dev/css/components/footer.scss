@@ -36,6 +36,9 @@
       display: inline-block;
       margin: 0.125rem;
       cursor: pointer;
+      background-color:#a7a7a7;
+      padding:11px 13px;
+      border-radius:25px;
 
       @include media-breakpoint-down(sm) {
         height: 2rem;
