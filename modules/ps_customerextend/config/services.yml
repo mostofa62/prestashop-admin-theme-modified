@@ -1,0 +1,105 @@
+services:
+  _defaults:
+    public: true
+
+  Customerextend\Controller\Admin\CustomerController:
+    class: Customerextend\Controller\Admin\CustomerController
+
+
+  #changes for order select mobile number
+  prestashop.adapter.customer.query_handler.get_customer_for_viewing:
+    class: 'Customerextend\Adapter\Customer\QueryHandler\GetCustomerForViewingHandler'
+    arguments:
+      - '@translator'
+      - "@=service('prestashop.adapter.legacy.context').getContext().language.id"
+      - "@=service('prestashop.adapter.legacy.context').getContext().link"
+    tags:
+      - name: tactician.handler
+        command: 'PrestaShop\PrestaShop\Core\Domain\Customer\Query\GetCustomerForViewing'
+
+
+  # prestashop.adapter.customer.command_handler.add_customer:
+  #   class: 'PrestaShop\PrestaShop\Adapter\Customer\CommandHandler\AddCustomerHandler'
+  #   arguments:
+  #     - '@prestashop.core.crypto.hashing'
+  #     - '@=service("prestashop.adapter.legacy.configuration").get("_COOKIE_KEY_")'
+  #   tags:
+  #     - name: tactician.handler
+  #       command: 'Customerextend\Core\Domain\Customer\Command\AddCustomerCommand'
+  # prestashop.adapter.customer.command_handler.edit_customer_handler:
+  #   class: 'PrestaShop\PrestaShop\Adapter\Customer\CommandHandler\EditCustomerHandler'
+  #   arguments:
+  #     - '@prestashop.core.crypto.hashing'
+  #     - '@=service("prestashop.adapter.legacy.configuration").get("_COOKIE_KEY_")'
+  #   tags:
+  #     - name: tactician.handler
+  #       command: 'Customerextend\Core\Domain\Customer\Command\EditCustomerCommand'
+
+  # prestashop.adapter.customer.query_handler.get_customer_for_editing:
+  #   class: 'Customerextend\Adapter\Customer\QueryHandler\GetCustomerForEditingHandler'
+  #   tags:
+  #     - name: tactician.handler
+  #       command: 'PrestaShop\PrestaShop\Core\Domain\Customer\Query\GetCustomerForEditing'
+
+  prestashop.adapter.customer.command_handler.add_customer:
+    class: 'Customerextend\Adapter\Customer\CommandHandler\AddCustomerHandler'
+    arguments:
+      - '@prestashop.core.crypto.hashing'
+      - '@=service("prestashop.adapter.legacy.configuration").get("_COOKIE_KEY_")'
+    tags:
+      - name: tactician.handler
+        command: 'Customerextend\Core\Domain\Customer\Command\AddCustomerCommand'
+
+  prestashop.adapter.customer.command_handler.edit_customer_handler:
+    class: 'Customerextend\Adapter\Customer\CommandHandler\EditCustomerHandler'
+    arguments:
+      - '@prestashop.core.crypto.hashing'
+      - '@=service("prestashop.adapter.legacy.configuration").get("_COOKIE_KEY_")'
+    tags:
+      - name: tactician.handler
+        command: 'Customerextend\Core\Domain\Customer\Command\EditCustomerCommand'
+
+
+  prestashop.core.form.identifiable_object.data_handler.customer_form_data_handler:
+    class: 'Customerextend\Core\Form\IdentifiableObject\DataHandler\CustomerFormDataHandler'
+    arguments:
+      - '@prestashop.core.command_bus'
+      - '@=service("prestashop.adapter.legacy.context").getContext().shop.id'      
+
+  prestashop.adapter.customer.query_handler.get_customer_for_editing:
+    class: 'Customerextend\Adapter\Customer\QueryHandler\GetCustomerForEditingHandler'
+    tags:
+      - name: tactician.handler
+        command: 'Customerextend\Core\Domain\Customer\Query\GetCustomerForEditing'
+
+  prestashop.core.form.identifiable_object.data_provider.customer_form_data_provider:
+    class: 'Customerextend\Core\Form\IdentifiableObject\DataProvider\CustomerFormDataProvider'
+    arguments:
+      - '@prestashop.core.query_bus'
+      - '@prestashop.adapter.legacy.configuration'
+      - '@prestashop.adapter.group.provider.default_groups_provider'
+      - '@=service("prestashop.core.b2b.b2b_feature").isActive()'
+
+  prestashop.bundle.form.admin.sell.customer.customer:
+        class: 'Customerextend\Form\Admin\Customer\CustomerType'
+        arguments:           
+            - '@=service("prestashop.adapter.form.choice_provider.group_by_id_choice_provider").getChoices()'            
+        calls:
+            - { method: setTranslator, arguments: ['@translator'] }
+        tags:
+           - { name: form.type }
+
+  prestashop.core.form.identifiable_object.builder.customer_form_builder:
+    class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+    factory: 'prestashop.core.form.builder.form_builder_factory:create'
+    arguments:
+      - 'Customerextend\Form\Admin\Customer\CustomerType'
+      - '@prestashop.core.form.identifiable_object.data_provider.customer_form_data_provider'
+
+
+  prestashop.adapter.customer.query_handler.search_customers:
+    class: 'Customerextend\Adapter\Customer\QueryHandler\SearchCustomersHandler'
+    tags:
+      - name: tactician.handler
+        command: 'Customerextend\Core\Domain\Customer\Query\SearchCustomers'
+

@@ -1,0 +1,2 @@
+_customers:
+    resource: "customer/_customer.yml"

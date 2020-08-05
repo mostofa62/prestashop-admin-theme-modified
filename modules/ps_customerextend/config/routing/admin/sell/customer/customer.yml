@@ -1,0 +1,19 @@
+admin_customers_create:
+  path: /new
+  methods: [GET, POST]
+  defaults:
+    _controller: Customerextend:Admin/Sell/Customer/Customer:create
+    _legacy_controller: AdminCustomers
+    _legacy_link: AdminCustomers:addcustomer
+
+admin_customers_edit:
+  path: /{customerId}/edit
+  methods: [GET, POST]
+  defaults:
+    _controller: Customerextend:Admin/Sell/Customer/Customer:edit
+    _legacy_controller: AdminCustomers
+    _legacy_link: AdminCustomers:updatecustomer
+    _legacy_parameters:
+      id_customer: customerId
+  requirements:
+    customerId: \d+

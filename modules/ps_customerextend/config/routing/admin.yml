@@ -1,0 +1,3 @@
+_admin_sell_routing:
+    resource: "admin/sell/_sell.yml"
+    prefix: /sell

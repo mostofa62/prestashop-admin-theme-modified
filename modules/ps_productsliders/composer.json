@@ -1,0 +1,11 @@
+{
+  "name": "productsliders",
+  "description": "Arklus Productsliders",
+  "autoload": {
+    "psr-4": {
+      "Productsliders\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "type": "prestashop-module"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "prestashop/customerextend",
+  "description": "Arklus Customerextend, Manage Customer Extra Field",
+  "autoload": {
+    "psr-4": {
+      "Customerextend\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "type": "prestashop-module"
+}

@@ -1,0 +1,81 @@
+
+{% import '@PrestaShop/Admin/macros.html.twig' as ps %}
+
+{% set allowedNameChars = '0-9!<>,;?=+()@#"°{}_$%:' %}
+{% set isGuest = isGuest|default(false) %}
+
+{% block customer_form %}
+  {{ form_start(customerForm) }}
+    <div class="card">
+      <h3 class="card-header">
+        <i class="material-icons">person</i>
+        {{ 'Customer'|trans({}, 'Admin.Global') }}
+      </h3>
+      <div class="card-block row">
+        <div class="card-text">
+          {{ form_errors(customerForm) }}
+
+          
+
+          {{ ps.form_group_row(customerForm.name, {}, {
+            'label': 'Full Name'|trans({}, 'Admin.Global'),
+            'help': '%s %s'|format('Invalid characters:'|trans({}, 'Admin.Notifications.Info'), allowedNameChars)
+          }) }}
+
+          
+
+          {{ ps.form_group_row(customerForm.email, {}, {
+            'label': 'Email'|trans({}, 'Admin.Global')
+          }) }}
+
+          {{ ps.form_group_row(customerForm.mobile_no, {}, {
+            'label': 'Mobile Number'|trans({}, 'Admin.Global')
+          }) }}
+
+          {{ ps.form_group_row(customerForm.password, {}, {
+            'label': 'Password'|trans({}, 'Admin.Global'),
+            'help': 'Password should be at least %length% characters long.'|trans({'%length%': minPasswordLength}, 'Admin.Notifications.Info'),
+            'class': isGuest ? 'd-none' : ''
+          }) }}
+
+          
+
+          {{ ps.form_group_row(customerForm.is_enabled, {}, {
+            'label': 'Enabled'|trans({}, 'Admin.Global'),
+            'help': 'Enable or disable customer login.'|trans({}, 'Admin.Orderscustomers.Help')
+          }) }}
+
+          
+
+          {{ ps.form_group_row(customerForm.group_ids, {}, {
+            'label': 'Group access'|trans({}, 'Admin.Orderscustomers.Feature'),
+            'help': 'Select all the groups that you would like to apply to this customer.'|trans({}, 'Admin.Orderscustomers.Help')
+          }) }}
+
+          {{ ps.form_group_row(customerForm.default_group_id, {}, {
+            'label': 'Default customer group'|trans({}, 'Admin.Orderscustomers.Feature'),
+            'help': '%s %s'|format('This group will be the user\'s default group.'|trans({}, 'Admin.Orderscustomers.Help'), 'Only the discount for the selected group will be applied to this customer.'|trans({}, 'Admin.Orderscustomers.Help'))
+          }) }}
+
+          
+
+          {% block customer_form_rest %}
+            {{ form_rest(customerForm) }}
+          {% endblock %}
+        </div>
+      </div>
+      <div class="card-footer">
+        {% if (displayInIframe is defined and displayInIframe == true) %}
+          <a href="javascript:window.history.back();" class="btn btn-outline-secondary">
+        {% else %}
+          <a href="{{ pathWithBackUrl('admin_customers_index') }}" class="btn btn-outline-secondary">
+        {% endif %}
+          {{ 'Cancel'|trans({}, 'Admin.Actions') }}
+        </a>
+        <button class="btn btn-primary float-right">
+          {{ 'Save'|trans({}, 'Admin.Actions') }}
+        </button>
+      </div>
+    </div>
+  {{ form_end(customerForm) }}
+{% endblock %}

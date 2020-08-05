@@ -1,0 +1,32 @@
+# Admin Back Office routing
+#_admin_routing:
+  #resource: "@Modules/ps_customerextend/config/routing/admin.yml"
+
+admin_customers_create:
+  path: /customer-extend/new
+  methods: [GET, POST]
+  defaults:
+    _controller: 'Customerextend\Controller\Admin\CustomerController:createAction'
+    _legacy_controller: AdminCustomers
+    _legacy_link: AdminCustomers:addcustomer
+
+admin_customers_edit:
+  path: /customer-extend/{customerId}/edit
+  methods: [GET, POST]
+  defaults:
+    _controller: 'Customerextend\Controller\Admin\CustomerController:editAction'
+    _legacy_controller: AdminCustomers
+    _legacy_link: AdminCustomers:updatecustomer
+    _legacy_parameters:
+      id_customer: customerId
+  requirements:
+    customerId: \d+
+
+
+admin_customers_search:
+  path: /customer-extend/search
+  methods: [GET]
+  defaults:
+    _controller: 'Customerextend\Controller\Admin\CustomerController:searchAction'
+    _legacy_controller: AdminCustomers
+    _legacy_link: AdminCustomers:searchCustomers

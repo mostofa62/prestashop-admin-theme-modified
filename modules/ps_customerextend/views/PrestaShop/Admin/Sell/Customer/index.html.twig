@@ -1,0 +1,61 @@
+
+
+{% set enableSidebar = true %}
+{% set layoutTitle = 'Manage your Customers'|trans({}, 'Admin.Orderscustomers.Feature') %}
+
+{% if isSingleShopContext %}
+  {% set layoutHeaderToolbarBtn = {
+    'add': {
+      'href': path('admin_customers_create'),
+      'desc': 'Add new customer'|trans({}, 'Admin.Orderscustomers.Feature'),
+      'icon': 'add_circle_outline'
+    }
+  } %}
+{% endif %}
+
+{% extends 'PrestaShopBundle:Admin:layout.html.twig' %}
+
+{% block content %}
+  {% block employee_helper_card %}
+    <div class="row">
+      <div class="col">
+        {% include '@PrestaShop/Admin/Sell/Customer/Blocks/showcase_card.html.twig' %}
+      </div>
+    </div>
+  {% endblock %}
+
+  
+
+  {% block customers_listing %}
+    {% if not isSingleShopContext %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-info" role="alert">
+            <p class="alert-text">
+              {{ 'You have to select a shop if you want to create a customer.'|trans({}, 'Admin.Orderscustomers.Notification') }}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col-12">
+        {% embed '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': customerGrid} %}
+          {% block grid_panel_extra_content %}
+            {% include '@PrestaShop/Admin/Sell/Customer/Blocks/delete_modal.html.twig' %}
+          {% endblock %}
+        {% endembed %}
+      </div>
+    </div>
+  {% endblock %}
+
+  
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+  {% include '@PrestaShop/Admin/Sell/Customer/Blocks/javascript.html.twig' %}
+{% endblock %}
+
