@@ -1020,70 +1020,70 @@ __webpack_require__(25);
 
 // "inherit" EventEmitter
 for (var i in _events2['default'].prototype) {
-    _prestashop2['default'][i] = _events2['default'].prototype[i];
+  _prestashop2['default'][i] = _events2['default'].prototype[i];
 }
 
 (0, _jquery2['default'])(document).ready(function () {
-    var dropDownEl = (0, _jquery2['default'])('.js-dropdown');
-    var form = new _componentsForm2['default']();
-    var topMenuEl = (0, _jquery2['default'])('.js-top-menu ul[data-depth="0"]');
-    var dropDown = new _componentsDropDown2['default'](dropDownEl);
-    var topMenu = new _componentsTopMenu2['default'](topMenuEl);
-    var productMinitature = new _componentsProductMiniature2['default']();
-    var productSelect = new _componentsProductSelect2['default']();
-    dropDown.init();
-    form.init();
-    topMenu.init();
-    productMinitature.init();
-    productSelect.init();
+  var dropDownEl = (0, _jquery2['default'])('.js-dropdown');
+  var form = new _componentsForm2['default']();
+  var topMenuEl = (0, _jquery2['default'])('.js-top-menu ul[data-depth="0"]');
+  var dropDown = new _componentsDropDown2['default'](dropDownEl);
+  var topMenu = new _componentsTopMenu2['default'](topMenuEl);
+  var productMinitature = new _componentsProductMiniature2['default']();
+  var productSelect = new _componentsProductSelect2['default']();
+  dropDown.init();
+  form.init();
+  topMenu.init();
+  productMinitature.init();
+  productSelect.init();
 
-    (0, _jquery2['default'])('.carousel[data-touch="true"]').swipe({
-        swipe: function swipe(event, direction, distance, duration, fingerCount, fingerData) {
-            if (direction == 'left') {
-                (0, _jquery2['default'])(this).carousel('next');
-            }
-            if (direction == 'right') {
-                (0, _jquery2['default'])(this).carousel('prev');
-            }
-        },
-        allowPageScroll: 'vertical'
-    });
+  (0, _jquery2['default'])('.carousel[data-touch="true"]').swipe({
+    swipe: function swipe(event, direction, distance, duration, fingerCount, fingerData) {
+      if (direction == 'left') {
+        (0, _jquery2['default'])(this).carousel('next');
+      }
+      if (direction == 'right') {
+        (0, _jquery2['default'])(this).carousel('prev');
+      }
+    },
+    allowPageScroll: 'vertical'
+  });
 
-    //custom by mostofa
-    var owl = (0, _jquery2['default'])('.owl-carousel');
-    owl.owlCarousel({
-        loop: true,
-        nav: true,
-        //center:true,
-        //autoWidth:true,
-        stagePadding: 0,
-        navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>'],
-        margin: 0,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 3
-            },
-            960: {
-                items: 4
-            },
-            1200: {
-                items: 4
-            }
-        }
-    });
-    owl.on('mousewheel', '.owl-stage', function (e) {
-        if (e.deltaY > 0) {
-            owl.trigger('next.owl');
-        } else {
-            owl.trigger('prev.owl');
-        }
-        e.preventDefault();
-    });
+  //custom by mostofa
+  var owl = (0, _jquery2['default'])('.owl-carousel');
+  owl.owlCarousel({
+    loop: true,
+    nav: true,
+    //center:true,
+    //autoWidth:true,
+    stagePadding: 0,
+    navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+    margin: 0,
+    responsive: {
+      0: {
+        items: 1
+      },
+      600: {
+        items: 3
+      },
+      960: {
+        items: 4
+      },
+      1200: {
+        items: 4
+      }
+    }
+  });
+  owl.on('mousewheel', '.owl-stage', function (e) {
+    if (e.deltaY > 0) {
+      owl.trigger('next.owl');
+    } else {
+      owl.trigger('prev.owl');
+    }
+    e.preventDefault();
+  });
 
-    //end mostofa custom
+  //end mostofa custom
 });
 
 /***/ }),
